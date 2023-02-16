@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    home page
+{% endblock title %}
+
+{% block content %}
+    <h1>Tweets</h1>
+
+    {% include 'Tweet/component/Tweet_form.html' %}
+
+    <div id="tweet_list"></div>
+
+
+
+    <script>
+        function BtnHandle(tweet_id, current_count)
+        {
+            console.log(`${tweet_id} : ${current_count}`)
+        }
+
+
+        function LikeBtn(tweet) {
+            let btn = `<button type="button" class="btn btn-primary" onclick=BtnHandle(${tweet.id},${tweet.count})> ${tweet.count} like </button>`;
+            return btn;
+        }
+
+        function TweetFormat(tweet)
+        {
+            let card = `<div class="card" id=tweet-${tweet.id}>
+                <div class="card-header">
+                    Featured
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">${tweet.content}</p>
+                    <p>${LikeBtn(tweet)}</p>
+                </div>
+            </div>`;
+            return card
+        }
+
+
+
+
+        const xhttp = new XMLHttpRequest();
+        const methode = "GET";
+        const url = "tweets/"
+        xhttp.open(methode, url);
+        xhttp.responseType = "json"
+        xhttp.onload = function () {
+            const serverResponse = xhttp.response;
+            let tweets = serverResponse.response;
+            var innerHtml = "";
+            for (let i = 0; i < tweets.length; i++) {
+                innerHtml += TweetFormat(tweets[i]);
+            }
+            var element = document.getElementById("tweet_list")
+            element.innerHTML = innerHtml
+
+        };
+        xhttp.send();
+
+    </script>
+{% endblock content %}

@@ -1,0 +1,9 @@
+<form action="/create_tweet/" method="post">
+    {% csrf_token %}
+  <div class="form-group">
+    <label for="text">Post Tweet</label>
+    <input type="hidden" value="{% url 'home_page' %}" id="tweet" name="next">
+    <textarea class="form-control" name="details"></textarea>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
